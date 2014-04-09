@@ -1,17 +1,13 @@
 package com.kwizzie.model;
 
+import com.google.code.morphia.annotations.Id;
+
 public abstract class QuizRoom {
-	protected LeaderBoard leaderBoard;
 	protected String description;
 	protected String roomName;
+	@Id
 	protected String roomID;
 	
-	public LeaderBoard getLeaderBoard() {
-		return leaderBoard;
-	}
-	public void setLeaderBoard(LeaderBoard leaderBoard) {
-		this.leaderBoard = leaderBoard;
-	}
 	public String getDescription() {
 		return description;
 	}

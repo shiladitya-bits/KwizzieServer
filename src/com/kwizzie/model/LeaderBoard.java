@@ -2,8 +2,10 @@ package com.kwizzie.model;
 
 import java.util.List;
 
+import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 
+@Entity
 public class LeaderBoard {
 	
 	@Id

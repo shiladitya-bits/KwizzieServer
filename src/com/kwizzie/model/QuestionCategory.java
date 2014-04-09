@@ -1,7 +1,9 @@
 package com.kwizzie.model;
 
+import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 
+@Entity
 public class QuestionCategory {
 
 	@Id

@@ -14,4 +14,8 @@ public class LeaderBoardResource {
 	public String getLeaders(){
 		return "";
 	}
+	
+//	public void updateLeaders(Player player){
+//	//TODO compare new score of player with minimum score of leaders and update leaders here
+//}
 }

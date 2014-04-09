@@ -12,7 +12,6 @@ import com.google.code.morphia.annotations.Id;
 import com.sun.xml.internal.txw2.annotation.XmlElement;
 
 @Entity
-@XmlRootElement
 public class Player {
 	
 	@Id

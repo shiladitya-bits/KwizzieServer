@@ -4,13 +4,15 @@ public class TextQuestion extends Question{
 
 	private String subTitle;
 
+	public TextQuestion(){
+		
+	}
 	public TextQuestion(String subTitle, QuestionLocation location,
-			QuestionCategory category, String questionTitle,
+		String questionTitle,
 			AnswerType answerType, boolean isLocked) {
 		super();
 		this.subTitle = subTitle;
 		this.location = location;
-		this.category = category;
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;

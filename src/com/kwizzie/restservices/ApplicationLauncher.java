@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ApplicationLauncher extends ResourceConfig{
 	public ApplicationLauncher(){
         register(RequestContextFilter.class);
-        register(ObjectMapper.class);
         register(PlayerResource.class);
+        register(LeaderBoardResource.class);
+        register(PublicQuizRoomResource.class);
+        register(PrivateQuizRoomResource.class);
 	}
 }

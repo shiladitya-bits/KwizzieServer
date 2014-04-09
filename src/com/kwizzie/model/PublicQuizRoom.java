@@ -3,27 +3,34 @@ package com.kwizzie.model;
 import java.util.List;
 import java.util.Map;
 
+import com.google.code.morphia.annotations.Embedded;
+import com.google.code.morphia.annotations.Entity;
+
+@Entity
 public class PublicQuizRoom extends QuizRoom{
 
-	private Map<QuestionCategory,List<Question>> categoryQuestionMap;
+	@Embedded
+	private Map<String,List<Question>> categoryQuestionMap;
+	
+	public PublicQuizRoom(){
+		
+	}
 	public PublicQuizRoom(
-			Map<QuestionCategory, List<Question>> categoryQuestionMap,
-			LeaderBoard leaderBoard, String description, String roomName,
+			Map<String, List<Question>> categoryQuestionMap, String description, String roomName,
 			String roomID) {
 		super();
 		this.categoryQuestionMap = categoryQuestionMap;
-		this.leaderBoard = leaderBoard;
 		this.description = description;
 		this.roomName = roomName;
 		this.roomID = roomID;
 	}
 
-	public Map<QuestionCategory, List<Question>> getCategoryQuestionMap() {
+	public Map<String, List<Question>> getCategoryQuestionMap() {
 		return categoryQuestionMap;
 	}
 
 	public void setCategoryQuestionMap(
-			Map<QuestionCategory, List<Question>> categoryQuestionMap) {
+			Map<String, List<Question>> categoryQuestionMap) {
 		this.categoryQuestionMap = categoryQuestionMap;
 	}
 	

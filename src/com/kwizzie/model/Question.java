@@ -1,24 +1,27 @@
 package com.kwizzie.model;
 
+import com.google.code.morphia.annotations.Embedded;
+
+@Embedded
 public abstract class Question {
-	protected String questionId;
+
+	@Embedded
 	protected QuestionLocation location;
-	protected QuestionCategory category;
+	
 	protected String questionTitle;
+	
+	@Embedded
 	protected AnswerType answerType;
+	
 	protected boolean isLocked;
+	
 	public QuestionLocation getLocation() {
 		return location;
 	}
 	public void setLocation(QuestionLocation location) {
 		this.location = location;
 	}
-	public QuestionCategory getCategory() {
-		return category;
-	}
-	public void setCategory(QuestionCategory category) {
-		this.category = category;
-	}
+	
 	public String getQuestionTitle() {
 		return questionTitle;
 	}

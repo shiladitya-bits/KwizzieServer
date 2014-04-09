@@ -32,4 +32,22 @@
  			<constructor-arg index="1" type="com.google.code.morphia.Morphia" ref="morphiaBean"/>
  			<constructor-arg index="2" type="java.lang.String" ref="dbName"/>
  		</bean>
+ 		
+ 		 <bean id="categoryDAO" class="com.kwizzie.dao.QuestionCategoryDAO">
+ 			<constructor-arg index="0" type="com.mongodb.Mongo" ref="mongoBean"/>
+ 			<constructor-arg index="1" type="com.google.code.morphia.Morphia" ref="morphiaBean"/>
+ 			<constructor-arg index="2" type="java.lang.String" ref="dbName"/>
+ 		</bean>
+ 		
+ 		 <bean id="publicDAO" class="com.kwizzie.dao.PublicQuizRoomDAO">
+ 			<constructor-arg index="0" type="com.mongodb.Mongo" ref="mongoBean"/>
+ 			<constructor-arg index="1" type="com.google.code.morphia.Morphia" ref="morphiaBean"/>
+ 			<constructor-arg index="2" type="java.lang.String" ref="dbName"/>
+ 		</bean>
+ 		
+ 		 <bean id="privateDAO" class="com.kwizzie.dao.PrivateQuizRoomDAO">
+ 			<constructor-arg index="0" type="com.mongodb.Mongo" ref="mongoBean"/>
+ 			<constructor-arg index="1" type="com.google.code.morphia.Morphia" ref="morphiaBean"/>
+ 			<constructor-arg index="2" type="java.lang.String" ref="dbName"/>
+ 		</bean>
 </beans>

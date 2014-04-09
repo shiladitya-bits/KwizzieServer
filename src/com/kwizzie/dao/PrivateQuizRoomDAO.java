@@ -13,8 +13,13 @@ public class PrivateQuizRoomDAO extends BasicDAO<PrivateQuizRoom , String>{
 		super(mongo, morphia, dbName);
 	}
 	
-	public PrivateQuizRoom getPrivateQuizRoom(String id, String password){
-		Query<PrivateQuizRoom> query= ds.createQuery(PrivateQuizRoom.class).field("room_id").equal(id).field("password").equal(password);
-		return query.asList().get(0);
+	public PrivateQuizRoom getQuizRoom(String roomID,String securityKey){
+		Query<PrivateQuizRoom> query = ds.createQuery(PrivateQuizRoom.class).field("roomName").equal(roomID);
+		PrivateQuizRoom quizRoom = query.asList().get(0);
+		if(quizRoom!=null && quizRoom.getSecurityKey().equals(securityKey)){
+			return quizRoom;
+		}
+		return null;
+		
 	}
 }

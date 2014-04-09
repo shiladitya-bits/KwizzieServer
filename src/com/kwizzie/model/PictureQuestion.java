@@ -4,13 +4,16 @@ public class PictureQuestion extends Question {
 
 	private String pictureURL;
 
+	public PictureQuestion(){
+		
+	}
+	
 	public PictureQuestion(String pictureURL, QuestionLocation location,
-			QuestionCategory category, String questionTitle,
+			String questionTitle,
 			AnswerType answerType, boolean isLocked) {
 		super();
 		this.pictureURL = pictureURL;
 		this.location = location;
-		this.category = category;
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;

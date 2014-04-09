@@ -25,8 +25,6 @@ public class PlayerResource {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getAll(){
-		Player player = new Player("shila2", "shila", "shila", "@shiladim");
-		playerDAO.save(player);
 		return gson.toJson(playerDAO.findAll());
 	}
 	
@@ -45,5 +43,9 @@ public class PlayerResource {
 			return "0";
 		}
 	}
-	
+//	@POST	
+//	public void registerPlayer(String userName, String password,String name,String emailId ){
+//		Player player = new Player(userName,password, name,emailId);
+//		pd.save(player);
+//	}
 }

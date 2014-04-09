@@ -16,4 +16,5 @@ public class QuestionCategoryDAO extends BasicDAO<QuestionCategory, String>{
 	public List<QuestionCategory> getCategories(){
 		return ds.find(QuestionCategory.class).asList();
 	}
+	
 }
