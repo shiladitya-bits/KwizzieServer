@@ -3,7 +3,13 @@ package com.kwizzie.model;
 public class TextAnswerType implements AnswerType {
 	
 	private String correctAnswer;
-	
+
+	public TextAnswerType(){
+		
+	}
+	public TextAnswerType(String correctAnswer){
+		this.correctAnswer = correctAnswer;
+	}
 	public String getCorrectAnswer() {
 		return correctAnswer;
 	}

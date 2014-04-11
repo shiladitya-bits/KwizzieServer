@@ -14,7 +14,7 @@ public class PrivateQuizRoomDAO extends BasicDAO<PrivateQuizRoom , String>{
 	}
 	
 	public PrivateQuizRoom getQuizRoom(String roomID,String securityKey){
-		Query<PrivateQuizRoom> query = ds.createQuery(PrivateQuizRoom.class).field("roomName").equal(roomID);
+		Query<PrivateQuizRoom> query = ds.createQuery(PrivateQuizRoom.class).field("roomID").equal(roomID);
 		PrivateQuizRoom quizRoom = query.asList().get(0);
 		if(quizRoom!=null && quizRoom.getSecurityKey().equals(securityKey)){
 			return quizRoom;

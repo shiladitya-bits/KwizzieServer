@@ -40,6 +40,14 @@ public class QuestionLocation {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
-	
+	public QuestionLocation(double latitude, double longitute, double radius,
+			String locationName, String imageUrl) {
+		super();
+		this.latitude = latitude;
+		this.longitute = longitute;
+		this.radius = radius;
+		this.locationName = locationName;
+		this.imageUrl = imageUrl;
+	}
+	public QuestionLocation() {}
 }
