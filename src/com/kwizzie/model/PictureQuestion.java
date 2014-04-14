@@ -17,6 +17,7 @@ public class PictureQuestion extends Question {
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;
+		this.typeOfQuestion="PICTURE_QUESTION";
 	}
 
 	public String getPictureURL() {

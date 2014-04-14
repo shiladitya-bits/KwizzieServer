@@ -19,8 +19,8 @@
         	<constructor-arg index="0" type="java.lang.String" value="localhost" />
         </bean>
  		<bean id="morphiaBean" class="com.google.code.morphia.Morphia"></bean>
- 		<bean id="gsonBean" class="com.google.gson.Gson"/>
- 	 
+ 		<bean id="jsonSerializer" class="flexjson.JSONSerializer"></bean>
+ 		
  		 <bean id="playerDAO" class="com.kwizzie.dao.PlayerDAO" >
  			<constructor-arg index="0" type="com.mongodb.Mongo" ref="mongoBean"/>
  			<constructor-arg index="1" type="com.google.code.morphia.Morphia" ref="morphiaBean"/>

@@ -11,19 +11,19 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gson.Gson;
 import com.kwizzie.dao.PrivateQuizRoomDAO;
 import com.kwizzie.model.AudioQuestion;
 import com.kwizzie.model.MCQAnswerType;
 import com.kwizzie.model.PictureQuestion;
 import com.kwizzie.model.PrivateQuizRoom;
+import com.kwizzie.model.QRAnswerType;
 import com.kwizzie.model.QRQuestion;
 import com.kwizzie.model.Question;
-import com.kwizzie.model.QuestionCategory;
-import com.kwizzie.model.QuizRoom;
 import com.kwizzie.model.TextAnswerType;
 import com.kwizzie.model.TextQuestion;
 import com.kwizzie.model.VideoQuestion;
+
+import flexjson.JSONSerializer;
 
 @Path("/quizRoom/private")
 public class PrivateQuizRoomResource {
@@ -32,17 +32,17 @@ public class PrivateQuizRoomResource {
 	PrivateQuizRoomDAO quizRoomDAO;
 	
 	@Autowired
-	Gson gson;
+	JSONSerializer serializer;
 	
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String enterQuizRoom(@QueryParam("roomId") String roomID , @QueryParam("key") String securityKey){
 		PrivateQuizRoom quizRoom = quizRoomDAO.getQuizRoom(roomID, securityKey);
 		if(quizRoom != null){
-			return gson.toJson(quizRoom);		
+			return serializer.deepSerialize(quizRoom);
 		} else {
-			return null;
-		}
+			return "1";
+		}	
 	    
 	}
 	
@@ -78,6 +78,13 @@ public class PrivateQuizRoomResource {
 		} catch(Exception e){
 			return "0";
 		}
-		
+	}
+	
+	@GET
+	@Path("/delete")
+	public String deleteQuizRoom(@QueryParam("roomId")String roomID,@QueryParam("key")String securityKey){
+		PrivateQuizRoom quizRoom = quizRoomDAO.getQuizRoom(roomID, securityKey);
+		quizRoomDAO.delete(quizRoom);
+		return "1";
 	}
 }

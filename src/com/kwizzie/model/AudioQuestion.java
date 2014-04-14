@@ -17,6 +17,7 @@ public class AudioQuestion extends Question{
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;
+		this.typeOfQuestion="AUDIO_QUESTION";
 	}
 	public String getAudioURL() {
 		return audioURL;

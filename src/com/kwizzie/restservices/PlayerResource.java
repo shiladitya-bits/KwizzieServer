@@ -9,9 +9,10 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gson.Gson;
 import com.kwizzie.dao.PlayerDAO;
 import com.kwizzie.model.Player;
+
+import flexjson.JSONSerializer;
 
 @Path("/player")
 public class PlayerResource {
@@ -20,12 +21,12 @@ public class PlayerResource {
 	PlayerDAO playerDAO;
 	
 	@Autowired
-	Gson gson;
+	JSONSerializer serializer;
 	
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getAll(){
-		return gson.toJson(playerDAO.findAll());
+		return serializer.deepSerialize(playerDAO.findAll());
 	}
 	
 	@POST
@@ -35,7 +36,8 @@ public class PlayerResource {
 		Player player = playerDAO.getPlayer(user);
 		if(player!=null){
 			if(player.getPassword().equals(password)){
-				return gson.toJson(player);
+				return serializer.deepSerialize(player);
+				
 			} else {
 				return "1";
 			}

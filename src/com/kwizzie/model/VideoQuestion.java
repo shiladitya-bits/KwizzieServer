@@ -17,6 +17,7 @@ public class VideoQuestion extends Question{
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;
+		this.typeOfQuestion="VIDEO_QUESTION";
 	}
 	public String getVideoURL() {
 		return videoURL;

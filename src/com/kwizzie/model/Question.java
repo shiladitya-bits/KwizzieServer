@@ -7,13 +7,12 @@ public abstract class Question {
 
 	@Embedded
 	protected QuestionLocation location;
-	
 	protected String questionTitle;
 	
 	@Embedded
 	protected AnswerType answerType;
-	
 	protected boolean isLocked;
+	protected String typeOfQuestion; 
 	
 	public QuestionLocation getLocation() {
 		return location;
@@ -40,6 +39,10 @@ public abstract class Question {
 	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
 	}
-	
-	
+	public String getTypeOfQuestion() {
+		return typeOfQuestion;
+	}
+	public void setTypeOfQuestion(String typeOfQuestion) {
+		this.typeOfQuestion = typeOfQuestion;
+	}
 }

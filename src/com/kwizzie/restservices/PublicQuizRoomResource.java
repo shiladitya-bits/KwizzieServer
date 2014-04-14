@@ -10,10 +10,11 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gson.Gson;
 import com.kwizzie.dao.PublicQuizRoomDAO;
 import com.kwizzie.dao.QuestionCategoryDAO;
 import com.kwizzie.model.QuestionCategory;
+
+import flexjson.JSONSerializer;
 
 @Path("/quizRoom/public")
 public class PublicQuizRoomResource {
@@ -25,11 +26,12 @@ public class PublicQuizRoomResource {
 	PublicQuizRoomDAO quizRoomDAO;
 	
 	@Autowired
-	Gson gson;
+	JSONSerializer serializer;
+	
 	@GET
 	@Path("/categories")
 	public String getCategories(){
-		return gson.toJson(questionCategoryDAO.getCategories());
+		return serializer.deepSerialize(questionCategoryDAO.getCategories());
 	}
 	
 	@POST
@@ -39,7 +41,7 @@ public class PublicQuizRoomResource {
 		if(category == null){
 			questionCategoryDAO.save(new QuestionCategory(categoryCode, categoryName));
 		}
-		return gson.toJson(questionCategoryDAO.getCategories());
+		return serializer.deepSerialize(questionCategoryDAO.getCategories());
 	}
 	
 	@GET

@@ -13,5 +13,6 @@ public class QRQuestion extends Question{
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;
+		this.typeOfQuestion="QR_QUESTION";
 	}
 }

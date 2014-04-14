@@ -16,6 +16,7 @@ public class TextQuestion extends Question{
 		this.questionTitle = questionTitle;
 		this.answerType = answerType;
 		this.isLocked = isLocked;
+		this.typeOfQuestion="TEXT_QUESTION";
 	}
 	public String getSubTitle() {
 		return subTitle;
