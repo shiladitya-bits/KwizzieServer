@@ -1,7 +1,10 @@
 package com.kwizzie.model;
 
+import com.google.code.morphia.annotations.Id;
+
 public class Leader {
 	private String name;
+	@Id
 	private	String username;
 	private int score;
 	private String photoURL;

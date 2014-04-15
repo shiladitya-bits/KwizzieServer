@@ -22,7 +22,10 @@ public class Player {
 	
 	private Map<String, Integer> publicRoomScores;
 	
-	public Player(){}
+	public Player(){
+		quizRoomScores = new HashMap<>();
+		publicRoomScores = new HashMap<>();
+	}
 	
 	public Player(String userName, String password,String photoURL,String name,String emailId) {
 		details= new PlayerPersonalDetails(photoURL,name,emailId);

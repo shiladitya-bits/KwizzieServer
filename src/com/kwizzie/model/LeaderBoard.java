@@ -1,12 +1,20 @@
 package com.kwizzie.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.code.morphia.annotations.Embedded;
+import com.google.code.morphia.annotations.Id;
+
 public class LeaderBoard {
+	@Embedded
 	private List<Leader> leaders;
+	@Id
 	private String quizRoomCode;
 	
-	public LeaderBoard(){}
+	public LeaderBoard(){
+		this.leaders = new ArrayList<Leader>();
+	}
 	
 	public LeaderBoard(List<Leader> leaders, String quizRoomCode) {
 		super();

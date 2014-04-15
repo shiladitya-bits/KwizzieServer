@@ -3,6 +3,7 @@ package com.kwizzie.restservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -39,7 +40,7 @@ public class PlayerResource {
 	
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
-	public String authenticatePlayer(@QueryParam("username")String user, @QueryParam("password")String password){
+	public String authenticatePlayer(@FormParam("username")String user, @FormParam("password")String password){
 		Player player = playerDAO.getPlayer(user);
 		if(player!=null){
 			if(player.getPassword().equals(password)){
@@ -56,7 +57,7 @@ public class PlayerResource {
 	@POST	
 	@Path("/register")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String registerPlayer(@QueryParam("username")String userName, @QueryParam("password")String password,@QueryParam("name")String name,@QueryParam("emailID")String emailId ){
+	public String registerPlayer(@FormParam("username")String userName, @FormParam("password")String password,@FormParam("name")String name,@FormParam("emailID")String emailId ){
 		if(!isPlayerExists(userName)){
 			Player player = new Player(userName,password, name,emailId);
 			playerDAO.save(player);	
@@ -106,7 +107,7 @@ public class PlayerResource {
 	@POST
 	@Path("/updatePublicScore")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updatePublicScore(@QueryParam("username")String username, @QueryParam("category")String category, @QueryParam("score")Integer score){
+	public String updatePublicScore(@FormParam("username")String username, @FormParam("category")String category, @FormParam("score")Integer score){
 		Player player = playerDAO.getPlayer(username);
 		if(player!=null){
 			if(player.getPublicRoomScores().get(category) == null){
@@ -120,9 +121,7 @@ public class PlayerResource {
 			} 
 		}
 		return "0";
-		
 	}
-	
 	
 	private void updatePublicLeaderboard(Player player, String category) {
 		Leader newPlayer = new Leader(player.getDetails().getName(), player.getUserName(), 

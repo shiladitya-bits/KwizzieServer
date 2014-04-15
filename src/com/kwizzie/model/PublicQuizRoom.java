@@ -1,5 +1,6 @@
 package com.kwizzie.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,16 +14,15 @@ public class PublicQuizRoom extends QuizRoom{
 	private Map<String,List<Question>> categoryQuestionMap;
 	
 	public PublicQuizRoom(){
-		
+		this(new HashMap<String, List<Question>>());
 	}
+	
 	public PublicQuizRoom(
-			Map<String, List<Question>> categoryQuestionMap, String description, String roomName,
-			String roomID) {
-		super();
+			Map<String, List<Question>> categoryQuestionMap) {
 		this.categoryQuestionMap = categoryQuestionMap;
-		this.description = description;
-		this.roomName = roomName;
-		this.roomID = roomID;
+		this.description = "Public Quiz Room";
+		this.roomName = "public";
+		this.roomID = "public";
 	}
 
 	public Map<String, List<Question>> getCategoryQuestionMap() {

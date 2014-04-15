@@ -24,8 +24,11 @@ public class PublicQuizRoomDAO extends BasicDAO<PublicQuizRoom, String>{
 			return null;
 		}
 		List<Question> allQuestions = quizRoom.getCategoryQuestionMap().get(category);
+		if(allQuestions == null){
+			return null;
+		}
 		int i=0;
-		while(i!=NO_OF_QUESTIONS_TO_BE_SELECTED){
+		while(i<NO_OF_QUESTIONS_TO_BE_SELECTED && i<allQuestions.size()){
 			int questionNum=(int)(Math.random())*(allQuestions.size());
 			selectedQuestions.add(allQuestions.get(questionNum));
 			allQuestions.remove(questionNum);
