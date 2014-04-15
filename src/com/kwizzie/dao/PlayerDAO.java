@@ -20,7 +20,11 @@ public class PlayerDAO extends BasicDAO<Player,String> {
 	
 	public Player getPlayer(String username){
 		Query<Player> query= ds.createQuery(Player.class).field("username").equal(username);
-		return query.asList().get(0);
+		List<Player> results = query.asList();
+		if(results.isEmpty()){
+			return null;
+		}
+		return results.get(0);
 	}
 
 }

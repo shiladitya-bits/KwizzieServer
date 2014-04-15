@@ -1,15 +1,11 @@
 package com.kwizzie.model;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
-import com.sun.xml.internal.txw2.annotation.XmlElement;
 
 @Entity
 public class Player {
@@ -24,19 +20,20 @@ public class Player {
 
 	private Map<String,Integer> quizRoomScores;
 	
+	private Map<String, Integer> publicRoomScores;
+	
 	public Player(){}
 	
 	public Player(String userName, String password,String photoURL,String name,String emailId) {
 		details= new PlayerPersonalDetails(photoURL,name,emailId);
 		this.userName = userName;
 		this.password = password;
+		quizRoomScores = new HashMap<>();
+		publicRoomScores = new HashMap<>();
 	}
 
 	public Player(String userName, String password,String name,String emailId) {
-		//TODO  default photoURL
-		details= new PlayerPersonalDetails("",name,emailId);
-		this.userName = userName;
-		this.password = password;
+		this(userName, password, "", name, emailId);
 	}
 	
 	public String getUserName() {
@@ -72,56 +69,18 @@ public class Player {
 		this.password = password;
 	}
 
-	
+	public Map<String, Integer> getPublicRoomScores() {
+		return publicRoomScores;
+	}
+
+	public void setPublicRoomScores(Map<String, Integer> publicRoomScores) {
+		this.publicRoomScores = publicRoomScores;
+	}
+
 	@Override
 	public String toString() {
 		return "Player [userName=" + userName + ", password=" + password
 				+ ", details=" + details + ", quizRoomScores=" + quizRoomScores
 				+ "]";
 	}
-
-
-	@XmlElement
-	@Embeddable
-	public static class PlayerPersonalDetails{
-		private String photoUrl;
-		private String name;
-		@Id
-		private String emailId;
-		public String getPhotoUrl() {
-			return photoUrl;
-		}
-		public PlayerPersonalDetails(){}
-		
-		public PlayerPersonalDetails(String photoUrl, String name,
-				String emailId) {
-			this.photoUrl = photoUrl;
-			this.setName(name);
-			this.emailId = emailId;
-		}
-		public void setPhotoUrl(String photoUrl) {
-			this.photoUrl = photoUrl;
-		}
-		public String getEmailId() {
-			return emailId;
-		}
-		public void setEmailId(String emailId) {
-			this.emailId = emailId;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		@Override
-		public String toString() {
-			return "PlayerPersonalDetails [photoUrl=" + photoUrl + ", name="
-					+ name + ", emailId=" + emailId + "]";
-		}
-	
-		
-	}
-	
-	
 }

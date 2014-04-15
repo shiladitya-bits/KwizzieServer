@@ -17,7 +17,7 @@ public class PublicQuizRoomDAO extends BasicDAO<PublicQuizRoom, String>{
 		super(mongo, morphia, dbName);
 	}
 
-	public String getQuestions(String category){
+	public List<Question> getQuestions(String category){
 		List<Question> selectedQuestions=new ArrayList<Question>();
 		PublicQuizRoom quizRoom = ds.find(PublicQuizRoom.class).asList().get(0);
 		if(quizRoom== null){
@@ -29,7 +29,8 @@ public class PublicQuizRoomDAO extends BasicDAO<PublicQuizRoom, String>{
 			int questionNum=(int)(Math.random())*(allQuestions.size());
 			selectedQuestions.add(allQuestions.get(questionNum));
 			allQuestions.remove(questionNum);
+			i++;
 		}
-		return selectedQuestions.toString();
+		return selectedQuestions;
 	}
 }

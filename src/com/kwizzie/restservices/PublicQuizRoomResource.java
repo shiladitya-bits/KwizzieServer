@@ -1,5 +1,7 @@
 package com.kwizzie.restservices;
 
+import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kwizzie.dao.PublicQuizRoomDAO;
 import com.kwizzie.dao.QuestionCategoryDAO;
+import com.kwizzie.model.Question;
 import com.kwizzie.model.QuestionCategory;
 
 import flexjson.JSONSerializer;
@@ -48,7 +51,8 @@ public class PublicQuizRoomResource {
 	@Path("/CategoryQuestions")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getQuestions(@QueryParam("category")String category){
-		return quizRoomDAO.getQuestions(category).toString();
+		return serializer.deepSerialize(quizRoomDAO.getQuestions(category));
+		
 	}
 
 }

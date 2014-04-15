@@ -2,38 +2,29 @@ package com.kwizzie.model;
 
 import java.util.List;
 
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
-
-@Entity
 public class LeaderBoard {
+	private List<Leader> leaders;
+	private String quizRoomCode;
 	
-	@Id
-	private String roomCode;
-	private List<Player> leaders;
-
-	public LeaderBoard(){
-	}
-
-	public LeaderBoard(String roomCode, List<Player> leaders) {
+	public LeaderBoard(){}
+	
+	public LeaderBoard(List<Leader> leaders, String quizRoomCode) {
 		super();
-		this.roomCode = roomCode;
 		this.leaders = leaders;
+		this.quizRoomCode = quizRoomCode;
 	}
 
-	public String getRoomCode() {
-		return roomCode;
-	}
-
-	public void setRoomCode(String roomCode) {
-		this.roomCode = roomCode;
-	}
-
-	public List<Player> getLeaders() {
+	public List<Leader> getLeaders() {
 		return leaders;
 	}
-
-	public void setLeaders(List<Player> leaders) {
+	public void setLeaders(List<Leader> leaders) {
 		this.leaders = leaders;
 	}
+	public String getQuizRoomCode() {
+		return quizRoomCode;
+	}
+	public void setQuizRoomCode(String quizRoomCode) {
+		this.quizRoomCode = quizRoomCode;
+	}
+
 }
