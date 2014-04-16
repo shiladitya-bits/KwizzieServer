@@ -17,7 +17,7 @@ public class LeaderBoardDAO extends BasicDAO<LeaderBoard,String> {
 	}
 
 	public List<Leader> getLeaders(String roomID){
-		Query<LeaderBoard> query= ds.createQuery(LeaderBoard.class).field("roomID").equal(roomID);
+		Query<LeaderBoard> query= ds.createQuery(LeaderBoard.class).field("quizRoomCode").equal(roomID);
 		List<LeaderBoard> results = query.asList();
 		if(results.isEmpty()){
 			return null;
@@ -31,13 +31,15 @@ public class LeaderBoardDAO extends BasicDAO<LeaderBoard,String> {
 	}
 
 	public void updateLeaders(String roomID, List<Leader> leaders) {	
-		Query<LeaderBoard> query= ds.createQuery(LeaderBoard.class).field("roomID").equal(roomID);
+		Query<LeaderBoard> query= ds.createQuery(LeaderBoard.class).field("quizRoomCode").equal(roomID);
 		List<LeaderBoard> results = query.asList();
+		LeaderBoard leaderBoard;
 		if(results.isEmpty()){
-			return;
+			leaderBoard = new LeaderBoard(leaders, roomID);
+		} else {
+			leaderBoard = query.asList().get(0);
+			leaderBoard.setLeaders(leaders);
 		}
-		LeaderBoard leaderBoard = results.get(0);
-		leaderBoard.setLeaders(leaders);
-		
+		ds.save(leaderBoard);
 	}
 }

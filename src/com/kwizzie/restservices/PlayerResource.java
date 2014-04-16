@@ -2,13 +2,13 @@ package com.kwizzie.restservices;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,14 +70,14 @@ public class PlayerResource {
 	@POST
 	@Path("/updatePrivateScore")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateScore(@QueryParam("username")String username, @QueryParam("roomID")String roomID, @QueryParam("score")Integer score){
+	public String updateScore(@FormParam("username")String username, @FormParam("roomID")String roomID, @FormParam("score")Integer score){
 		Player player = playerDAO.getPlayer(username);
 		if(player!=null){
-			if(player.getQuizRoomScores().get(roomID) == null){
+				//TODO: add check to see if player has already played in this room
 				player.getQuizRoomScores().put(roomID, score);
+				playerDAO.save(player);
 				updateLeaderboard(player, roomID);
 				return "1";
-			} 
 		}
 		return "0";
 	}
@@ -87,10 +87,18 @@ public class PlayerResource {
 				player.getQuizRoomScores().get(roomID), player.getDetails().getPhotoUrl());
 		List<Leader> leaders = leaderDAO.getLeaders(roomID);
 		if(leaders == null){
-			return;
+			leaders = new ArrayList<>();
 		}
 		int i=0;
-		for(;i<leaders.size(); i++){
+		for(i=0;i<leaders.size();i++){
+			if(leaders.get(i).getUsername().equals(newPlayer.getUsername())){
+				break;
+			}
+		}
+		if(i<leaders.size()){
+			leaders.remove(i);
+		}
+		for(i=0;i<leaders.size(); i++){
 			Leader leader = leaders.get(i);
 			if(leader.getScore() < newPlayer.getScore()){
 				break;
@@ -110,28 +118,39 @@ public class PlayerResource {
 	public String updatePublicScore(@FormParam("username")String username, @FormParam("category")String category, @FormParam("score")Integer score){
 		Player player = playerDAO.getPlayer(username);
 		if(player!=null){
-			if(player.getPublicRoomScores().get(category) == null){
+			if(player.getPublicRoomScores().get(category) != null){
 				Integer currentScore = player.getPublicRoomScores().get(category);
 				if(currentScore == null){
 					currentScore = 0;
 				}
 				player.getPublicRoomScores().put(category, currentScore + score);
-				updatePublicLeaderboard(player, category);
+				playerDAO.save(player);
+				updatePublicLeaderboard(player);
+				
 				return "1";
 			} 
 		}
 		return "0";
 	}
 	
-	private void updatePublicLeaderboard(Player player, String category) {
+	private void updatePublicLeaderboard(Player player) {
 		Leader newPlayer = new Leader(player.getDetails().getName(), player.getUserName(), 
-				player.getPublicRoomScores().get(category), player.getDetails().getPhotoUrl());
+				getTotalPublicScore(player.getPublicRoomScores()), player.getDetails().getPhotoUrl());
 		List<Leader> leaders = leaderDAO.getLeaders("public");
 		if(leaders == null){
 			leaders = new ArrayList<>();
 		}
 		int i=0;
-		for(;i<leaders.size(); i++){
+		for(i=0;i<leaders.size();i++){
+			if(leaders.get(i).getUsername().equals(newPlayer.getUsername())){
+				break;
+			}
+		}
+		if(i<leaders.size()){
+			leaders.remove(i);
+		}
+
+		for(i=0;i<leaders.size(); i++){
 			Leader leader = leaders.get(i);
 			if(leader.getScore() < newPlayer.getScore()){
 				break;
@@ -144,6 +163,14 @@ public class PlayerResource {
 		leaderDAO.updateLeaders("public", leaders);
 	}
 
+	private int getTotalPublicScore(Map<String, Integer> scores){
+		int total = 0;
+		for(Map.Entry<String, Integer> score : scores.entrySet()){
+			total += score.getValue();
+		}
+		return total;
+	}
+	
 	private boolean isPlayerExists(String username){
 		Player player = playerDAO.get(username);
 		if(player == null){

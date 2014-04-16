@@ -19,6 +19,7 @@ import com.kwizzie.model.PrivateQuizRoom;
 import com.kwizzie.model.QRAnswerType;
 import com.kwizzie.model.QRQuestion;
 import com.kwizzie.model.Question;
+import com.kwizzie.model.QuestionLocation;
 import com.kwizzie.model.TextAnswerType;
 import com.kwizzie.model.TextQuestion;
 import com.kwizzie.model.VideoQuestion;
@@ -53,19 +54,20 @@ public class PrivateQuizRoomResource {
 		ArrayList<String> optionList = new ArrayList<String>();
 		optionList.add("disney");
 		optionList.add("dreamworks");
-		Question ques = new PictureQuestion("http://img4.wikia.nocookie.net/__cb20130222060253/disney/images/7/7d/2013disneyprincess.jpg",null,
+		QuestionLocation location = new QuestionLocation(15.390684,73.878155,1000.0, "BITS Goa", "http://localhost:8080/images/faqsImage.png");
+		Question ques = new PictureQuestion("http://img4.wikia.nocookie.net/__cb20130222060253/disney/images/7/7d/2013disneyprincess.jpg", location,
 		"Identify The picture",new MCQAnswerType(optionList, 0),false);
 
-		Question ques2 = new TextQuestion("contin___s",null,"Fill in the missing characters",new TextAnswerType("uou"),false);
+		Question ques2 = new TextQuestion("contin___s", null,"Fill in the missing characters",new TextAnswerType("uou"),false);
 		ArrayList<String> options3 = new ArrayList<String>();
 		options3.add("sonu nigam");
 		options3.add("arijit singh");
 		options3.add("mika singh");
 		options3.add("honney singh");
 
-		Question ques3 = new AudioQuestion("http://www.largesound.com/ashborytour/sound/brobob.mp3", null, "Identify the singer", new MCQAnswerType(options3, 2), false);
-		Question ques4 = new VideoQuestion("http://info.sonicretro.org/images/5/54/Tiger_Sonic_3D_Blast_Ad.flv", null, "Identify the actor in video", new TextAnswerType("Ranbeer Kapoor"), false);
-		Question ques5 = new QRQuestion(null, "scan the qr code", new QRAnswerType("testqr"), false);
+		Question ques3 = new AudioQuestion("http://www.largesound.com/ashborytour/sound/brobob.mp3", location, "Identify the singer", new MCQAnswerType(options3, 2), false);
+		Question ques4 = new VideoQuestion("http://info.sonicretro.org/images/5/54/Tiger_Sonic_3D_Blast_Ad.flv", location, "Identify the actor in video", new TextAnswerType("Ranbeer Kapoor"), false);
+		Question ques5 = new QRQuestion(location, "scan the qr code", new QRAnswerType("testqr"), false);
 		questions=new ArrayList<Question>();
 		questions.add(ques5);
 		questions.add(ques);
@@ -73,7 +75,8 @@ public class PrivateQuizRoomResource {
 		questions.add(ques3);
 		questions.add(ques4);
 		try{
-		quizRoomDAO.save(new PrivateQuizRoom(questions, securityKey, null, "Bits Quiz Room", roomID));
+		//TODO: change roomName and description
+		quizRoomDAO.save(new PrivateQuizRoom(questions, securityKey, roomID, roomID, roomID));
 		return "1";
 		} catch(Exception e){
 			return "0";
