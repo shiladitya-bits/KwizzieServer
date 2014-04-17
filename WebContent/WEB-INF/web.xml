@@ -13,14 +13,14 @@
   	</listener-class>
   </listener>
   
-  <!-- <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+  <welcome-file-list>
+    <welcome-file>WebUI/privateQuizRoom.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list> -->
+  </welcome-file-list>
   
   <servlet>
   <servlet-name>Jersey</servlet-name>

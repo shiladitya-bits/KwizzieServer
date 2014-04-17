@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript" src ="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src ="js/privateQuizRoom.js"></script>
+</head>
+<body>
+	<div>
+		<table>
+			<tr><td>Quiz Room Name</td><td><input id ="roomName" type ="text"></td></tr>
+			<tr><td>Quiz Room ID</td><td><input id ="roomID" type ="text"></td></tr>
+			<tr><td>Security Key</td><td><input id ="key" type ="text"></td></tr>
+			<tr><td>Description</td><td><input id ="description" type ="text"></td></tr>
+			<tr>
+				<td><button id="addPictureQues" onclick="addPictureQues()">Add Picture Question</button></td>
+				<td><button id="addAudioQues" onclick="addAudioQues()">Add Audio Question</button></td>
+				<td><button id="addQrQues" onclick="addQrQues()">Add QR Question</button></td>
+				<td><button id="addTextQues" onclick="addTextQues()">Add Text Question</button></td>
+				<td><button id="addVideoQues" onclick="addVideoQues()">Add Video Question</button></td>
+			</tr>
+		</table>
+	</div>
+	<div id ="addQues">
+		
+	</div>
+	<div id ="mcqAnswerDiv">
+	
+Give Options: <br/>
+<table>
+<tr> <td>
+		A :<input type ="text"  /> <br/>
+		B :<input type ="text"  /> <br/>
+		C :<input type ="text"  /> <br/>
+		D :<input type ="text"  /> <br/>
+	</td>
+	<td>
+	<table>
+	<tr>
+	<td>Correct Answer : </td>
+	<td> <select>
+		<option value="a">A</option>
+		<option value="b">B</option>
+		<option value="c">C</option>
+		<option value="d">D</option>
+	
+	</select></td>
+	</tr>
+	</table>
+	
+	</td>
+</tr>
+	</table>
+	</div>
+	<div id="textAnswerDiv">
+		Correct Answer : <input type="text" />
+	</div>
+</body>
+</html>

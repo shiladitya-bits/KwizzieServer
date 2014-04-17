@@ -54,7 +54,7 @@ public class PrivateQuizRoomResource {
 		ArrayList<String> optionList = new ArrayList<String>();
 		optionList.add("disney");
 		optionList.add("dreamworks");
-		QuestionLocation location = new QuestionLocation(15.390684,73.878155,1000.0, "BITS Goa", "http://localhost:8080/images/faqsImage.png");
+		QuestionLocation location = new QuestionLocation(15.390353333333334, 73.87886499999999,1000.0, "BITS Goa", "http://localhost:8080/images/faqsImage.png");
 		Question ques = new PictureQuestion("http://img4.wikia.nocookie.net/__cb20130222060253/disney/images/7/7d/2013disneyprincess.jpg", location,
 		"Identify The picture",new MCQAnswerType(optionList, 0),false);
 
