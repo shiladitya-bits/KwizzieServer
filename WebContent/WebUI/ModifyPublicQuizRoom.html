@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript" src ="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src ="js/publicQuizRoom.js"></script>
+<style type="text/css">
+#addingQuestion {
+	border: 2px solid;
+}
+
+</style>
+</head>
+<body>
+		<div>
+			<table>
+				<tr><td>Category Code</td><td><input name="categoryCode" id ="categoryCode" type ="text"></td></tr>
+				
+				<tr>
+					<td><button id="addPictureQues" onclick="addmediaQues('picture')">Add Picture Question</button></td>
+					<td><button id="addAudioQues" onclick="addmediaQues('audio')">Add Audio Question</button></td>
+					<td><button id="addQrQues" onclick="addQrQues()">Add QR Question</button></td>
+					<td><button id="addTextQues" onclick="addTextQues()">Add Text Question</button></td>
+					<td><button id="addVideoQues" onclick="addmediaQues('video')">Add Video Question</button></td>
+				</tr>
+			</table>
+			</div>
+		<div id="addingQuestion">
+			
+			<div id ="addQues"> 				
+			
+			</div>
+			
+		
+	</div>
+</body>
+</html>

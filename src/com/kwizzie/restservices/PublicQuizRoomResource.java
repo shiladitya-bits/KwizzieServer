@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -58,7 +60,7 @@ public class PublicQuizRoomResource {
 		}
 		return serializer.deepSerialize(questionCategoryDAO.getCategories());
 	}
-	
+
 	@GET
 	@Path("/categories/add")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -120,5 +122,39 @@ public class PublicQuizRoomResource {
 			return "0";
 		}
 	}
+	@POST
+	@Path("/addQuestion/{category}/text")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addTextQuestion(@PathParam("category")String category, 
+			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle){
+		
+		//TODO: location and answerType
+		Question q = new TextQuestion(subTitle, null, questionTitle, null, false);
+		quizRoomDAO.addQuestion(category, q);
+		return "1";
+	}
+	
+	@POST
+	@Path("/addQuestion/{category}/qr")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addQrQuestion(@PathParam("category")String category, 
+			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle){
 
+		//TODO: location and answerType
+		Question q = new QRQuestion(null, questionTitle, null, false);
+		quizRoomDAO.addQuestion(category, q);
+		return "1";
+	}
+	
+/*	@POST
+	@Path("/addQuestion/{roomID}/picture")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addPictureQuestion(@PathParam("roomID")String roomID, 
+			@FormDataParam("quesTitle")String quesTitle){
+		return "1";
+	}
+*/
 }

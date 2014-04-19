@@ -1,16 +1,14 @@
-var server_url = "http://localhost:8080/KwizzieServer/UploadServlet/private/";
-var server_url_text = "http://localhost:8080/KwizzieServer/addQuestion/";
+var server_url ="http://localhost:8080/KwizzieServer/UploadServlet/public";
+var server_url_text ="http://localhost:8080/KwizzieServer/kwizzie/quizRoom/public/";
 
 function addmediaQues(typeOfMmedia){
 	$("#AnswerDiv").html("");
-	var roomID =document.getElementById("roomID").value;
-	var url = server_url +roomID+"/"+typeOfMmedia;
+	var categoryCode =document.getElementById("categoryCode").value;
+	var url = server_url +categoryCode+"/"+typeOfMmedia;
 	var html = '<form action ="'+url+'" method="post" enctype="multipart/form-data">';
 	html+='<table><tr><td>Question Title :	</td>	<td><textarea id="quesTitle" rows ="4" cols="30" "quesTitle"> </textarea></td>';
 	html+='</tr><tr><td>Choose a picture :</td>	<td><input type = "file" name ="picture" /><br/> </td>';
-	html+='</tr><tr><td><button type="button" onclick="showLocationDiv()">Add location to Question</button><br/></td></tr>';
-	html+='<tr><td><div id="location"></div></td></tr>';
-	html+='<tr><td>Answer Type:</td><td>';
+	html+='</tr><tr><td>Answer Type:</td><td>';
 	html+='<input type="radio" name="answerType" id ="mcq" onclick="answertypeSelect()" value="mcq"/> MCQ';
 	html+='<input type="radio" name="answerType" id ="text" onclick="answertypeSelect()" value="text" /> Text Answer Type';
 	html+='</td></tr></table><div id ="AnswerDiv"></div>';
@@ -20,13 +18,11 @@ function addmediaQues(typeOfMmedia){
 };
 
 function addQrQues(){
-	var roomID =document.getElementById("roomID").value;
-	var url = server_url_text +roomID+"/qr";
+	var categoryCode =document.getElementById("categoryCode").value;
+	var url = server_url +categoryCode+"/qr";
 	var html = '<form action ="'+url+'" method="post">';
 	
 	//html+='<br/> Answer : <input  type ="text" 	/> <br/><br/>';
-	html+='<br/><button onclick="showLocationDiv()">Add location to Question</button><br/><br/>';	
-	html+='<div id="location"></div>';	
 	html+='<div id="AnswerDiv"></div>';
 	html+='</form>';
 	quesDiv = document.getElementById("addQues");
@@ -38,16 +34,12 @@ function addQrQues(){
 
 function addTextQues(){
 	$("#AnswerDiv").html("");
-	var roomID =document.getElementById("roomID").value;
-	var url = server_url_text +roomID+"/text";
+	var categoryCode =document.getElementById("categoryCode").value;
+	var url = server_url +categoryCode+"/text";
 	var html = '<form action ="'+url+'" method="post">';
 	html+='<table><tr><td>Question Title</td><td><textarea cols="30" rows="4" name="quesTitle"></textarea></td>';
 	html+='</tr><tr><td>Question Subtitle</td><td><input  type="text" name="quesSubtitle"/> </td>';
-	html+='</tr><tr><td><button type="button" onclick="showLocationDiv()">Add location to Question</button><br/></td></tr>';
-	html+='<tr><td><div id="location"></div></td></tr>';	
-		
-		
-	html+='<tr><td>Answer Type</td><td>';
+	html+='</tr><tr><td>Answer Type</td><td>';
 	html+='<input type="radio" name="answerType" id ="mcq" onclick="answertypeSelect()" value="mcq" /> MCQ';
 	html+='<input type="radio" name="answerType" id ="text" onclick="answertypeSelect()" value="text"/> Text Answer Type';
 	html+='</td></tr></table><div id ="AnswerDiv"></div></form>';
@@ -55,14 +47,6 @@ function addTextQues(){
 	quesDiv.innerHTML = html;*/
 	$("#addQues").html(html);
 	
-};
-
-function showLocationDiv(){
-	var html='<table><tr><td>Latitude : </td><td><input typr="text" name="latitude"></td></tr>';
-	html+='<tr><td>Longitude : </td><td><input typr="text" name="longitude"></td></tr>';
-	html+='<tr><td>Destination information : </td><td><textarea name="destinationInfo" id="destinationInfo" rows ="4" cols="30"> </textarea></td></tr>';
-	html+='</table>';
-	$("#location").html(html);
 };
 
 

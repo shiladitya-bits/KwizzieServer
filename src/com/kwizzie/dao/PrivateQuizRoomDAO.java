@@ -1,11 +1,13 @@
 package com.kwizzie.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.dao.BasicDAO;
 import com.google.code.morphia.query.Query;
 import com.kwizzie.model.PrivateQuizRoom;
+import com.kwizzie.model.Question;
 import com.mongodb.Mongo;
 
 public class PrivateQuizRoomDAO extends BasicDAO<PrivateQuizRoom , String>{
@@ -26,5 +28,20 @@ public class PrivateQuizRoomDAO extends BasicDAO<PrivateQuizRoom , String>{
 			}
 			return null;
 		}
+	}
+	
+	public void addQuestionToRoom(String roomID, Question q){
+		Query<PrivateQuizRoom> query = ds.createQuery(PrivateQuizRoom.class).field("roomID").equal(roomID);
+		List<PrivateQuizRoom> quizRoomList = query.asList();
+		if(!quizRoomList.isEmpty()){
+			PrivateQuizRoom quizRoom = quizRoomList.get(0);
+			List<Question> questions = quizRoom.getQuestions();
+			if(questions == null){
+				quizRoom.setQuestions(new ArrayList<Question>());
+			}
+			quizRoom.getQuestions().add(q);
+			ds.save(quizRoom);
+		}
+
 	}
 }

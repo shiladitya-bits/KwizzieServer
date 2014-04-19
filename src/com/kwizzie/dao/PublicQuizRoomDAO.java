@@ -36,4 +36,18 @@ public class PublicQuizRoomDAO extends BasicDAO<PublicQuizRoom, String>{
 		}
 		return selectedQuestions;
 	}
+	
+	public void addQuestion(String category, Question q){
+		List<Question> selectedQuestions=new ArrayList<Question>();
+		PublicQuizRoom quizRoom = ds.find(PublicQuizRoom.class).asList().get(0);
+		if(quizRoom== null){
+			return;
+		}
+		List<Question> allQuestions = quizRoom.getCategoryQuestionMap().get(category);
+		if(allQuestions == null){
+			quizRoom.getCategoryQuestionMap().put(category, new ArrayList<Question>());
+		}
+		quizRoom.getCategoryQuestionMap().get(category).add(q);
+		ds.save(quizRoom);
+	}
 }

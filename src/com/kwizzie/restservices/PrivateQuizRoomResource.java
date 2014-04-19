@@ -3,15 +3,23 @@ package com.kwizzie.restservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.atlassian.plugins.rest.common.multipart.FilePart;
+import com.atlassian.plugins.rest.common.multipart.MultipartFormParam;
 import com.kwizzie.dao.PrivateQuizRoomDAO;
+import com.kwizzie.model.AnswerType;
 import com.kwizzie.model.AudioQuestion;
 import com.kwizzie.model.MCQAnswerType;
 import com.kwizzie.model.PictureQuestion;
@@ -44,9 +52,114 @@ public class PrivateQuizRoomResource {
 		} else {
 			return "1";
 		}	
-	    
 	}
 	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addQuizRoomPost(@FormParam("roomID")String roomID, @FormParam("roomName")String roomName, @FormParam("key")String securityKey, 
+			@FormParam("description")String description){
+		PrivateQuizRoom quizRoom = new PrivateQuizRoom(new ArrayList<Question>(), securityKey, description, roomName, roomID);
+		quizRoomDAO.save(quizRoom);
+		return "1";
+	}
+	
+	@POST
+	@Path("/addQuestion/{roomID}/text")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addTextQuestion(@PathParam("roomID")String roomID, 
+			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle,
+			@FormParam("latitude")String latitude, @FormParam("longitude")String longitude, @FormParam("destinationInfo")String locationName,
+			@FormParam("answerType")String answerTypeString, @FormParam("optiona")String option1, @FormParam("optiona")String option2, @FormParam("optiona")String option3, @FormParam("optiona")String option4, @FormParam("options")String correctOption,
+			@FormParam("correctAns")String correctAns){
+		
+		//location
+    	QuestionLocation location = null;
+    	if(checkLocationInput(latitude, longitude, locationName)){
+    		location = new QuestionLocation(Double.parseDouble(latitude), Double.parseDouble(longitude), 1000, locationName, "");
+    	}
+
+    	//answer type
+    	AnswerType answerType =null;
+    	if("mcq".equals(answerTypeString)){
+    		answerType = new MCQAnswerType(getAnswerList(option1, option2, option3, option4), Integer.parseInt(correctOption));
+    	} else if("text".equals(answerTypeString)){
+    			answerType = new TextAnswerType(correctAns);
+    	}
+
+    	Question q = new TextQuestion(subTitle, location, questionTitle, answerType, false);
+		quizRoomDAO.addQuestionToRoom(roomID, q);
+		return "1";
+	}
+	
+    private List<String> getAnswerList(String option1, String option2,
+			String option3, String option4) {
+    	List<String> options = new ArrayList<String>();
+    	if(option1!=null && option1.trim()!=""){
+    		options.add(option1);
+    	}
+     	if(option2!=null && option2.trim()!=""){
+    		options.add(option2);
+    	}
+     	if(option3!=null && option3.trim()!=""){
+    		options.add(option3);
+    	}
+     	if(option4!=null && option4.trim()!=""){
+    		options.add(option4);
+    	}
+    	
+		return options;
+	}
+
+	private boolean checkLocationInput(String latitude, String longitude, String name) {
+    	if(latitude==null || longitude==null || name==null){
+    		return false;
+    	}
+    	if(latitude.trim()=="" || longitude.trim()=="" || name.trim() ==""){
+    		return false;
+    	}
+    	return true;
+	}
+	
+	@POST
+	@Path("/addQuestion/{roomID}/qr")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addQrQuestion(@PathParam("roomID")String roomID, 
+			@FormParam("quesTitle")String questionTitle,
+			@FormParam("latitude")String latitude, @FormParam("longitude")String longitude, @FormParam("destinationInfo")String locationName,
+			@FormParam("answerType")String answerTypeString, @FormParam("optiona")String option1, @FormParam("optiona")String option2, @FormParam("optiona")String option3, @FormParam("optiona")String option4, @FormParam("options")String correctOption,
+			@FormParam("correctAns")String correctAns){
+
+		//location
+    	QuestionLocation location = null;
+    	if(checkLocationInput(latitude, longitude, locationName)){
+    		location = new QuestionLocation(Double.parseDouble(latitude), Double.parseDouble(longitude), 1000, locationName, "");
+    	}
+
+    	//answer type
+    	AnswerType answerType =null;
+    	if("mcq".equals(answerTypeString)){
+    		answerType = new MCQAnswerType(getAnswerList(option1, option2, option3, option4), Integer.parseInt(correctOption));
+    	} else if("text".equals(answerTypeString)){
+    			answerType = new TextAnswerType(correctAns);
+    	}
+
+    	Question q = new QRQuestion(location, questionTitle, answerType, false);
+		quizRoomDAO.addQuestionToRoom(roomID, q);
+		return "1";
+	}
+	
+/*	@POST
+	@Path("/addQuestion/{roomID}/picture")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addPictureQuestion(@PathParam("roomID")String roomID, 
+			@FormDataParam("quesTitle")String quesTitle){
+		return "1";
+	}
+*/	
 	@GET
 	@Path("/add")
 	public String addQuizRoom(@QueryParam("roomId")String roomID,@QueryParam("key")String securityKey){
