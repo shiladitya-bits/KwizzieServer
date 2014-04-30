@@ -38,8 +38,8 @@ public class LeaderBoardDAO extends BasicDAO<LeaderBoard,String> {
 			leaderBoard = new LeaderBoard(leaders, roomID);
 		} else {
 			leaderBoard = query.asList().get(0);
-			leaderBoard.setLeaders(leaders);
 		}
+		leaderBoard.setLeaders(leaders);
 		ds.save(leaderBoard);
 	}
 }

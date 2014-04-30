@@ -2,22 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>create Room</title>
+<script type="text/javascript" src ="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src ="js/privateQuizRoom.js"></script>
 </head>
-<body>
+<body onload="createRoom();">
 <h3><b>Create new Private  Quiz Room<br/></b></h3>
-	<div>
-	<form action ="http://localhost:8080/KwizzieServer/kwizzie/quizRoom/private/add" method ="post">
-		<table>
-				<tr><td>Quiz Room Name</td><td><input id ="roomName" type ="text" name = "roomName"></td></tr>
-				<tr><td>Quiz Room ID</td><td><input id ="roomID" type ="text" name = "roomID"></td></tr>
-				<tr><td>Security Key</td><td><input id ="key" type ="text" name = "key"></td></tr>
-				<tr><td>Description</td><td><input id ="description" type ="text" name = "description"></td></tr>
-				<tr>
-					<td><button id="createQuizRoom" type="submit" onclick="createQuizRoom()">Create Quiz Room</button></td>
-				</tr>
-		</table>
-	</form>
+	<div id="formDiv">
 	</div>
 </body>
 </html>

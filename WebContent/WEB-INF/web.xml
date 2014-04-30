@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>Kwizzie</display-name>
-  
   <context-param>
-  	<param-name>contextConfigLocation</param-name>
-  	<param-value>classpath:applicationContext.xml</param-value>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
   </context-param>
-  
   <listener>
-  	<listener-class>
+    <listener-class>
   		org.springframework.web.context.ContextLoaderListener
   	</listener-class>
   </listener>
-  
   <welcome-file-list>
     <welcome-file>WebUI/privateQuizRoom.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -21,35 +18,28 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
   <servlet>
-  <servlet-name>Jersey</servlet-name>
-  <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-  <init-param>
-  	<param-name>jersey.config.server.provider.packages</param-name>
-  	<param-value>com.kwizzie.restservices</param-value>
-  </init-param>
-  
-   <init-param>
-       <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-       <param-value>true</param-value>
-   </init-param>	
-   
-   <init-param>
-       <param-name>javax.ws.rs.Application</param-name>
-       <param-value>com.kwizzie.restservices.ApplicationLauncher</param-value>
-   </init-param>
-  <load-on-startup>1</load-on-startup>  
+    <servlet-name>Jersey</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>com.kwizzie.restservices</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.kwizzie.restservices.ApplicationLauncher</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
-  
-  
   <servlet-mapping>
-  <servlet-name>Jersey</servlet-name>
-  <url-pattern>/kwizzie/*</url-pattern>
+    <servlet-name>Jersey</servlet-name>
+    <url-pattern>/kwizzie/*</url-pattern>
   </servlet-mapping>
-  
-  
-    <servlet>
+  <servlet>
     <description></description>
     <display-name>UploadServlet</display-name>
     <servlet-name>UploadServlet</servlet-name>
@@ -59,4 +49,16 @@
     <servlet-name>UploadServlet</servlet-name>
     <url-pattern>/UploadServlet/*</url-pattern>
   </servlet-mapping>
-</web-app> 
+  
+  <servlet>
+    <description></description>
+    <display-name>RegistrationServlet</display-name>
+    <servlet-name>RegistrationServlet</servlet-name>
+    <servlet-class>com.kwizzie.restservices.RegistrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistrationServlet</servlet-name>
+    <url-pattern>/RegistrationServlet</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

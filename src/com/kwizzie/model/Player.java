@@ -21,6 +21,8 @@ public class Player {
 	private Map<String,Integer> quizRoomScores;
 	
 	private Map<String, Integer> publicRoomScores;
+
+	private static final String DEFAULT_PHOTO_URL = "localhost:8080/KwizzieServer/kwizzieMedia/user_default.png";
 	
 	public Player(){
 		quizRoomScores = new HashMap<>();
@@ -36,7 +38,7 @@ public class Player {
 	}
 
 	public Player(String userName, String password,String name,String emailId) {
-		this(userName, password, "", name, emailId);
+		this(userName, password, DEFAULT_PHOTO_URL, name, emailId);
 	}
 	
 	public String getUserName() {

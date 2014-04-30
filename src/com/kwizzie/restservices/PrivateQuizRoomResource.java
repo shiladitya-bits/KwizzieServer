@@ -2,6 +2,7 @@ package com.kwizzie.restservices;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -13,16 +14,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.atlassian.plugins.rest.common.multipart.FilePart;
-import com.atlassian.plugins.rest.common.multipart.MultipartFormParam;
+import com.kwizzie.dao.PlayerDAO;
 import com.kwizzie.dao.PrivateQuizRoomDAO;
 import com.kwizzie.model.AnswerType;
 import com.kwizzie.model.AudioQuestion;
 import com.kwizzie.model.MCQAnswerType;
 import com.kwizzie.model.PictureQuestion;
+import com.kwizzie.model.Player;
 import com.kwizzie.model.PrivateQuizRoom;
 import com.kwizzie.model.QRAnswerType;
 import com.kwizzie.model.QRQuestion;
@@ -43,9 +43,21 @@ public class PrivateQuizRoomResource {
 	@Autowired
 	JSONSerializer serializer;
 	
+	@Autowired
+	PlayerDAO playerDAO;
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String enterQuizRoom(@QueryParam("roomId") String roomID , @QueryParam("key") String securityKey){
+	public String enterQuizRoom(@QueryParam("roomId") String roomID , @QueryParam("key") String securityKey, @QueryParam("player")String player){
+		if((player != null && player.length()!=0)){
+			Player playerObj = playerDAO.getPlayer(player);
+			Map<String, Integer>  scores = playerObj.getQuizRoomScores();
+			if(scores != null){
+				if(scores.containsKey(roomID)){
+					return "2";
+				}
+			} 
+		}
 		PrivateQuizRoom quizRoom = quizRoomDAO.getQuizRoom(roomID, securityKey);
 		if(quizRoom != null){
 			return serializer.deepSerialize(quizRoom);
@@ -71,7 +83,7 @@ public class PrivateQuizRoomResource {
 	public String addTextQuestion(@PathParam("roomID")String roomID, 
 			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle,
 			@FormParam("latitude")String latitude, @FormParam("longitude")String longitude, @FormParam("destinationInfo")String locationName,
-			@FormParam("answerType")String answerTypeString, @FormParam("optiona")String option1, @FormParam("optiona")String option2, @FormParam("optiona")String option3, @FormParam("optiona")String option4, @FormParam("options")String correctOption,
+			@FormParam("answerType")String answerTypeString, @FormParam("optiona")String option1, @FormParam("optionb")String option2, @FormParam("optionc")String option3, @FormParam("optiond")String option4, @FormParam("options")String correctOption,
 			@FormParam("correctAns")String correctAns){
 		
 		//location
@@ -129,7 +141,6 @@ public class PrivateQuizRoomResource {
 	public String addQrQuestion(@PathParam("roomID")String roomID, 
 			@FormParam("quesTitle")String questionTitle,
 			@FormParam("latitude")String latitude, @FormParam("longitude")String longitude, @FormParam("destinationInfo")String locationName,
-			@FormParam("answerType")String answerTypeString, @FormParam("optiona")String option1, @FormParam("optiona")String option2, @FormParam("optiona")String option3, @FormParam("optiona")String option4, @FormParam("options")String correctOption,
 			@FormParam("correctAns")String correctAns){
 
 		//location
@@ -139,12 +150,8 @@ public class PrivateQuizRoomResource {
     	}
 
     	//answer type
-    	AnswerType answerType =null;
-    	if("mcq".equals(answerTypeString)){
-    		answerType = new MCQAnswerType(getAnswerList(option1, option2, option3, option4), Integer.parseInt(correctOption));
-    	} else if("text".equals(answerTypeString)){
-    			answerType = new TextAnswerType(correctAns);
-    	}
+    	
+    	AnswerType answerType = new QRAnswerType(correctAns);
 
     	Question q = new QRQuestion(location, questionTitle, answerType, false);
 		quizRoomDAO.addQuestionToRoom(roomID, q);
@@ -160,7 +167,7 @@ public class PrivateQuizRoomResource {
 		return "1";
 	}
 */	
-	@GET
+/*	@GET
 	@Path("/add")
 	public String addQuizRoom(@QueryParam("roomId")String roomID,@QueryParam("key")String securityKey){
 		List<Question> questions = new ArrayList<>();
@@ -194,7 +201,7 @@ public class PrivateQuizRoomResource {
 		} catch(Exception e){
 			return "0";
 		}
-	}
+	}*/
 	
 	@GET
 	@Path("/delete")

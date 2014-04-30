@@ -9,7 +9,7 @@ import com.mongodb.Mongo;
 
 public class QuestionCategoryDAO extends BasicDAO<QuestionCategory, String>{
 
-	protected QuestionCategoryDAO(Mongo mongo, Morphia morphia, String dbName) {
+	public QuestionCategoryDAO(Mongo mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}
 

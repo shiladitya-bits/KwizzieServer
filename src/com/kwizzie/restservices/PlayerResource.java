@@ -8,6 +8,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -36,6 +37,18 @@ public class PlayerResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getAll(){
 		return serializer.deepSerialize(playerDAO.findAll());
+	}
+	
+	@GET
+	@Path("/{username}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getPlayer(@PathParam("username") String username){
+		Player player = playerDAO.getPlayer(username);
+		if(player != null){
+			return serializer.deepSerialize(player);
+		} else {
+			return "";
+		}
 	}
 	
 	@POST
@@ -118,17 +131,15 @@ public class PlayerResource {
 	public String updatePublicScore(@FormParam("username")String username, @FormParam("category")String category, @FormParam("score")Integer score){
 		Player player = playerDAO.getPlayer(username);
 		if(player!=null){
-			if(player.getPublicRoomScores().get(category) != null){
-				Integer currentScore = player.getPublicRoomScores().get(category);
-				if(currentScore == null){
-					currentScore = 0;
-				}
-				player.getPublicRoomScores().put(category, currentScore + score);
-				playerDAO.save(player);
-				updatePublicLeaderboard(player);
-				
-				return "1";
-			} 
+			Integer currentScore = player.getPublicRoomScores().get(category);
+			if(currentScore == null){
+				currentScore = 0;
+			}
+			player.getPublicRoomScores().put(category, currentScore + score);
+			playerDAO.save(player);
+			updatePublicLeaderboard(player);
+			
+			return "1";
 		}
 		return "0";
 	}

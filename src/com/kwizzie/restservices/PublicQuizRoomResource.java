@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kwizzie.dao.PublicQuizRoomDAO;
 import com.kwizzie.dao.QuestionCategoryDAO;
+import com.kwizzie.model.AnswerType;
 import com.kwizzie.model.AudioQuestion;
 import com.kwizzie.model.MCQAnswerType;
 import com.kwizzie.model.PictureQuestion;
@@ -127,23 +128,53 @@ public class PublicQuizRoomResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN)
 	public String addTextQuestion(@PathParam("category")String category, 
-			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle){
+			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle,
+			@FormParam("answerType")String answerTypeString, @FormParam("optiona")String option1, @FormParam("optionb")String option2, @FormParam("optionc")String option3, @FormParam("optiond")String option4, @FormParam("options")String correctOption,
+			@FormParam("correctAns")String correctAns){
 		
-		//TODO: location and answerType
-		Question q = new TextQuestion(subTitle, null, questionTitle, null, false);
+		
+    	//answer type
+    	AnswerType answerType =null;
+    	if("mcq".equals(answerTypeString)){
+    		answerType = new MCQAnswerType(getAnswerList(option1, option2, option3, option4), Integer.parseInt(correctOption));
+    	} else if("text".equals(answerTypeString)){
+    			answerType = new TextAnswerType(correctAns);
+    	}
+    	Question q = new TextQuestion(subTitle, null, questionTitle, answerType, false);
 		quizRoomDAO.addQuestion(category, q);
 		return "1";
 	}
-	
+    private List<String> getAnswerList(String option1, String option2,
+			String option3, String option4) {
+    	List<String> options = new ArrayList<String>();
+    	if(option1!=null && option1.trim()!=""){
+    		options.add(option1);
+    	}
+     	if(option2!=null && option2.trim()!=""){
+    		options.add(option2);
+    	}
+     	if(option3!=null && option3.trim()!=""){
+    		options.add(option3);
+    	}
+     	if(option4!=null && option4.trim()!=""){
+    		options.add(option4);
+    	}
+    	
+		return options;
+	}
+
 	@POST
 	@Path("/addQuestion/{category}/qr")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN)
 	public String addQrQuestion(@PathParam("category")String category, 
-			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle){
+			@FormParam("quesTitle")String questionTitle, @FormParam("quesSubtitle")String subTitle,
+			@FormParam("correctAns")String correctAns){
 
-		//TODO: location and answerType
-		Question q = new QRQuestion(null, questionTitle, null, false);
+    	AnswerType answerType = new QRAnswerType(correctAns);
+
+    	Question q = new QRQuestion(null, questionTitle, answerType, false);
+
 		quizRoomDAO.addQuestion(category, q);
 		return "1";
 	}
