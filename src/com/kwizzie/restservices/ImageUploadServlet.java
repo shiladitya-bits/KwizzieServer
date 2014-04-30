@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.kwizzie.dao.PrivateQuizRoomDAO;
 import com.kwizzie.dao.PublicQuizRoomDAO;
@@ -37,17 +39,19 @@ import com.kwizzie.model.VideoQuestion;
 @WebServlet
 @MultipartConfig
 public class ImageUploadServlet extends HttpServlet{
-
+	private static final long serialVersionUID = 1L;
 	@Autowired
-    PrivateQuizRoomDAO privateQuizRoomDAO;
-
+	PrivateQuizRoomDAO privateQuizRoomDAO;
 	@Autowired
 	PublicQuizRoomDAO publicQuizRoomDAO;
-	
 	@Autowired
 	QuestionCategoryDAO questionCategoryDAO;
 	
-	private static final long serialVersionUID = 1L;
+	public void init(ServletConfig config) throws ServletException{
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("text/plain;charset=UTF-8");
 
@@ -81,9 +85,9 @@ public class ImageUploadServlet extends HttpServlet{
             }
             writer.println("New file " + fileName + " created at " + path);
             if(roomType.equals("private")){
-                addQuestionToPrivateRoom(roomID, path, fileName, questionType, request);
+                addQuestionToPrivateRoom(roomID, fileName, questionType, request);
             } else {
-            	addQuestionToCategory(roomID, path, fileName, questionType, request);
+            	addQuestionToCategory(roomID, fileName, questionType, request);
             }
         } catch (FileNotFoundException fne) {
             writer.println("You either did not specify a file to upload or are "
@@ -104,7 +108,7 @@ public class ImageUploadServlet extends HttpServlet{
         }
     }
     
-    private void addQuestionToCategory(String roomID, String path,
+    private void addQuestionToCategory(String roomID,
 			String fileName, String questionType, HttpServletRequest request) {
 		
     	QuestionCategory category = questionCategoryDAO.get(roomID);
@@ -112,7 +116,7 @@ public class ImageUploadServlet extends HttpServlet{
     		return;
     	}
     	Question q = null;
-    	String questionTitle = request.getParameter("questionTitle");
+    	String questionTitle = request.getParameter("quesTitle");
     	
     	//location
     	String latitude = request.getParameter("latitude");
@@ -136,19 +140,20 @@ public class ImageUploadServlet extends HttpServlet{
     		answerType = new MCQAnswerType(getAnswerList(option1, option2, option3, option4), Integer.parseInt(correctOption));
     	} else if("text".equals(answerTypeString)){
     		String correctAns = request.getParameter("correctAns");
-    		if(questionType.equals("text")){
-    			answerType = new TextAnswerType(correctAns);
-    		} else {
+    		if(questionType.equals("qr")){
     			answerType = new QRAnswerType(correctAns);
+    		} else {
+    			answerType = new TextAnswerType(correctAns);
     		}
     		
     	}
-    	if(questionType.equals("picture")){
-    		q = new PictureQuestion(path+"/"+fileName,location, questionTitle, answerType, false);
+       	String serverURL = request.getServerName()+"/KwizzieServer/kwizzieMedia";
+       	if(questionType.equals("picture")){
+    		q = new PictureQuestion(serverURL+"/"+fileName,location, questionTitle, answerType, false);
     	} else if(questionType.equals("audio")){
-    		q = new AudioQuestion(path+"/"+fileName,location, questionTitle, answerType, false);
+    		q = new AudioQuestion(serverURL+"/"+fileName,location, questionTitle, answerType, false);
     	} else if(questionType.equals("video")){
-    		q = new VideoQuestion(path+"/"+fileName,location, questionTitle, answerType, false);
+    		q = new VideoQuestion(serverURL+"/"+fileName,location, questionTitle, answerType, false);
     	} 
     	if(q!=null){
     		publicQuizRoomDAO.addQuestion(roomID, q);	
@@ -184,10 +189,10 @@ public class ImageUploadServlet extends HttpServlet{
     	return true;
 	}
 
-	private void addQuestionToPrivateRoom(String roomID, String path, String fileName,
+	private void addQuestionToPrivateRoom(String roomID, String fileName,
 			String questionType, HttpServletRequest request) {
     	Question q = null;
-    	String questionTitle = request.getParameter("questionTitle");
+    	String questionTitle = request.getParameter("quesTitle");
 
     	//location
     	String latitude = request.getParameter("latitude");
@@ -210,20 +215,22 @@ public class ImageUploadServlet extends HttpServlet{
     		answerType = new MCQAnswerType(getAnswerList(option1, option2, option3, option4), Integer.parseInt(correctOption));
     	} else if("text".equals(answerTypeString)){
     		String correctAns = request.getParameter("correctAns");
-    		if(questionType.equals("text")){
-    			answerType = new TextAnswerType(correctAns);
-    		} else {
+    		if(questionType.equals("qr")){
     			answerType = new QRAnswerType(correctAns);
+    		} else {
+    			answerType = new TextAnswerType(correctAns);
     		}
     		
     	}
+    	
+       	String serverURL = request.getServerName()+":"+request.getServerPort()+"/KwizzieServer/kwizzieMedia";
     	if(questionType.equals("picture")){
-    		q = new PictureQuestion(path+"/"+fileName,location, questionTitle, answerType, false);
+    		q = new PictureQuestion(serverURL+"/"+fileName,location, questionTitle, answerType, false);
     	} else if(questionType.equals("audio")){
-    		q = new AudioQuestion(path+"/"+fileName,location, questionTitle, answerType, false);
+    		q = new AudioQuestion(serverURL+"/"+fileName,location, questionTitle, answerType, false);
     	} else if(questionType.equals("video")){
-    		q = new VideoQuestion(path+"/"+fileName,location, questionTitle, answerType, false);
-    	}
+    		q = new VideoQuestion(serverURL+"/"+fileName,location, questionTitle, answerType, false);
+    	} 
     	
     	if(q != null){
     		privateQuizRoomDAO.addQuestionToRoom(roomID, q);

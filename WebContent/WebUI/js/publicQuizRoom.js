@@ -1,12 +1,13 @@
-var server_url ="http://localhost:8080/KwizzieServer/UploadServlet/public";
-var server_url_text ="http://localhost:8080/KwizzieServer/kwizzie/quizRoom/public/";
+var server_url = "http://"+window.location.host+"/KwizzieServer/UploadServlet/public/";
+var server_url_text = "http://"+window.location.host+"/KwizzieServer/kwizzie/quizRoom/public/addQuestion/";
+var server_url_create = "http://"+window.location.host+"/KwizzieServer/quizRoom/public/categories/add";
 
 function addmediaQues(typeOfMmedia){
 	$("#AnswerDiv").html("");
 	var categoryCode =document.getElementById("categoryCode").value;
 	var url = server_url +categoryCode+"/"+typeOfMmedia;
 	var html = '<form action ="'+url+'" method="post" enctype="multipart/form-data">';
-	html+='<table><tr><td>Question Title :	</td>	<td><textarea id="quesTitle" rows ="4" cols="30" "quesTitle"> </textarea></td>';
+	html+='<table><tr><td>Question Title :	</td>	<td><textarea id="quesTitle" rows ="4" cols="30" name="quesTitle"> </textarea></td>';
 	html+='</tr><tr><td>Choose a picture :</td>	<td><input type = "file" name ="picture" /><br/> </td>';
 	html+='</tr><tr><td>Answer Type:</td><td>';
 	html+='<input type="radio" name="answerType" id ="mcq" onclick="answertypeSelect()" value="mcq"/> MCQ';
@@ -17,9 +18,19 @@ function addmediaQues(typeOfMmedia){
 	quesDiv.innerHTML = html;
 };
 
+function createCategory(){
+	var html='';
+	html += '<form method ="post" action="'+server_url_create+'"><table>';
+	html +=	'<tr><td>Category Name</td><td><input id ="categoryName" type ="text" name = "categoryName"></td></tr>';
+	html += '<tr><td>Category ID</td><td><input id ="categoryCode" type ="text" name = "categoryCode"></td></tr>';
+	html +=	'<tr><td><button id="createCategory" type="submit" onclick="createQuizRoom()">Create Category</button></td></tr>';
+	html += '</table></form>';
+	$("#formDiv").html(html);
+}
+
 function addQrQues(){
 	var categoryCode =document.getElementById("categoryCode").value;
-	var url = server_url +categoryCode+"/qr";
+	var url = server_url_text +categoryCode+"/qr";
 	var html = '<form action ="'+url+'" method="post">';
 	
 	//html+='<br/> Answer : <input  type ="text" 	/> <br/><br/>';
@@ -31,11 +42,10 @@ function addQrQues(){
 	
 };
 
-
 function addTextQues(){
 	$("#AnswerDiv").html("");
 	var categoryCode =document.getElementById("categoryCode").value;
-	var url = server_url +categoryCode+"/text";
+	var url = server_url_text +categoryCode+"/text";
 	var html = '<form action ="'+url+'" method="post">';
 	html+='<table><tr><td>Question Title</td><td><textarea cols="30" rows="4" name="quesTitle"></textarea></td>';
 	html+='</tr><tr><td>Question Subtitle</td><td><input  type="text" name="quesSubtitle"/> </td>';
@@ -48,7 +58,6 @@ function addTextQues(){
 	$("#addQues").html(html);
 	
 };
-
 
 function addMCQAns(){
 	

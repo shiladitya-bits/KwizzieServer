@@ -12,7 +12,7 @@ import com.mongodb.Mongo;
 
 public class PrivateQuizRoomDAO extends BasicDAO<PrivateQuizRoom , String>{
 
-	protected PrivateQuizRoomDAO(Mongo mongo, Morphia morphia, String dbName) {
+	public PrivateQuizRoomDAO(Mongo mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}
 	
